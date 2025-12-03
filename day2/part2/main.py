@@ -1,5 +1,5 @@
 import re
-regex = r"^(.*)\1$"
+regex = r"^(.*)\1+$"
 
 def parse_input(filename: str):
     with open(filename, 'r') as file:
