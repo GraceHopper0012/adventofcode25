@@ -79,8 +79,17 @@ class Circuit:
         self._boxes = new
 
     def merge(self, cc) -> None:
-        for box in cc.boxes:
-            self.addBox(box)
+        if self.length <= cc.length:
+            newcc = self
+            oldcc = cc
+        else:
+            newcc = cc
+            oldcc = self
+
+        for box in oldcc.boxes:
+            newcc.addBox(box)
+
+        Circuit.circuits.remove(oldcc)
 
     def addBox(self, box) -> None:
         if box.circuit is self:
@@ -89,8 +98,7 @@ class Circuit:
             box.circuit.removeBox(box)
         if box not in self.boxes:
             self.boxes.append(box)
-        # box.circuit = self
-        box.setCircuit(self)
+        box.circuit = self
         self.boxes.append(box)
 
     @property
@@ -99,8 +107,7 @@ class Circuit:
 
     def removeBox(self, box):
         if box.circuit is self:
-            # box.circuit = None
-            box.setCircuit(None)
+            box.circuit = None
             self.boxes.remove(box)
         else:
             raise Exception
